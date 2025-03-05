@@ -14,6 +14,10 @@ import {
 } from "@/components/ui/card";
 import RoleBadge from "@/components/role-badge";
 
+interface RoleCounts {
+  [key: number]: number;
+}
+
 export default async function RolesManagementPage() {
   const supabase = await createClient();
 
@@ -55,7 +59,7 @@ export default async function RolesManagementPage() {
   }
 
   // Get user counts by role
-  const roleCounts = {};
+  const roleCounts: RoleCounts = {};
 
   for (const role of roles || []) {
     const { count } = await supabase

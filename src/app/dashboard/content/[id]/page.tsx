@@ -15,6 +15,25 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+interface ContentUser {
+  full_name: string | null;
+  email: string;
+}
+
+interface Content {
+  id: string;
+  title: string;
+  excerpt: string | null;
+  content: string | null;
+  status: string;
+  visibility: string;
+  category: string | null;
+  views: number;
+  created_at: string;
+  tags: string[];
+  users: ContentUser;
+}
+
 export default async function ContentDetailPage({
   params,
 }: {
@@ -55,7 +74,7 @@ export default async function ContentDetailPage({
     .from("content")
     .select("*, users!inner(full_name, email)")
     .eq("id", contentId)
-    .single();
+    .single() as { data: Content | null; error: Error | null };
 
   if (contentError) {
     console.error("Error fetching content:", contentError);
@@ -168,7 +187,7 @@ export default async function ContentDetailPage({
                   <div className="pt-2">
                     <h4 className="text-sm font-medium mb-2">Tags</h4>
                     <div className="flex flex-wrap gap-2">
-                      {contentData.tags.map((tag) => (
+                      {contentData.tags.map((tag: string) => (
                         <span
                           key={tag}
                           className="text-xs px-2 py-1 rounded-full bg-secondary text-secondary-foreground"

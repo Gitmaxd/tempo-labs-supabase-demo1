@@ -7,6 +7,20 @@ import RoleBadge from "@/components/role-badge";
 import { ROLES, canAccessAdminPanel } from "@/lib/roles";
 import Link from "next/link";
 
+interface Role {
+  id: number;
+  name: string;
+}
+
+interface User {
+  id: string;
+  full_name: string | null;
+  name: string | null;
+  email: string;
+  created_at: string;
+  roles: Role | null;
+}
+
 export default async function AdminUsersPage() {
   const supabase = await createClient();
 
@@ -41,7 +55,7 @@ export default async function AdminUsersPage() {
   const { data: allUsers, error: usersError } = await supabase
     .from("users")
     .select("id, full_name, name, email, created_at, roles(id, name)")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false }) as { data: User[] | null; error: Error | null };
 
   if (usersError) {
     console.error("Error fetching users:", usersError);
