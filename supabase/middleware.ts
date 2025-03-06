@@ -25,13 +25,24 @@ export const updateSession = async (request: NextRequest) => {
           },
           setAll(cookiesToSet) {
             cookiesToSet.forEach(({ name, value, options }) => {
-              request.cookies.set(name, value);
+              try {
+                request.cookies.set(name, value);
+              } catch (e) {
+                console.warn('Warning: Unable to set cookie on request', e);
+              }
+              
+              // Create a new response each time to ensure cookies are properly set
               response = NextResponse.next({
                 request: {
                   headers: request.headers,
                 },
               });
-              response.cookies.set(name, value, options);
+              
+              try {
+                response.cookies.set(name, value, options);
+              } catch (e) {
+                console.warn('Warning: Unable to set cookie on response', e);
+              }
             });
           },
         },
@@ -40,15 +51,19 @@ export const updateSession = async (request: NextRequest) => {
 
     // This will refresh session if expired - required for Server Components
     // https://supabase.com/docs/guides/auth/server-side/nextjs
-    const { data: { user }, error } = await supabase.auth.getUser();
+    try {
+      const { data: { user }, error } = await supabase.auth.getUser();
 
-    // protected routes
-    if (request.nextUrl.pathname.startsWith("/dashboard") && error) {
-      return NextResponse.redirect(new URL("/sign-in", request.url));
-    }
+      // protected routes
+      if (request.nextUrl.pathname.startsWith("/dashboard") && error) {
+        return NextResponse.redirect(new URL("/sign-in", request.url));
+      }
 
-    if (request.nextUrl.pathname === "/" && !error) {
-      return NextResponse.redirect(new URL("/", request.url));
+      if (request.nextUrl.pathname === "/" && !error) {
+        return NextResponse.redirect(new URL("/", request.url));
+      }
+    } catch (e) {
+      console.error('Error checking user in middleware:', e);
     }
 
     return response;
@@ -56,6 +71,7 @@ export const updateSession = async (request: NextRequest) => {
     // If you are here, a Supabase client could not be created!
     // This is likely because you have not set up environment variables.
     // Check out http://localhost:3000 for Next Steps.
+    console.error('Error creating Supabase client in middleware:', e);
     return NextResponse.next({
       request: {
         headers: request.headers,

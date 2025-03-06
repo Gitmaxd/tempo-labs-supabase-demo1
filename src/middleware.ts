@@ -18,8 +18,18 @@ export async function middleware(req: NextRequest) {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value, options }) => {
-            req.cookies.set(name, value)
-            res.cookies.set(name, value, options)
+            // In middleware, we need to set cookies on both the request and response
+            try {
+              req.cookies.set(name, value)
+            } catch (e) {
+              console.warn('Warning: Unable to set cookie on request', e)
+            }
+            
+            try {
+              res.cookies.set(name, value, options)
+            } catch (e) {
+              console.warn('Warning: Unable to set cookie on response', e)
+            }
           })
         },
       },
@@ -27,10 +37,14 @@ export async function middleware(req: NextRequest) {
   )
 
   // Refresh session if expired - required for Server Components
-  const { data: { session }, error } = await supabase.auth.getSession()
-
-  if (error) {
-    console.error('Auth session error:', error)
+  try {
+    const { data: { session }, error } = await supabase.auth.getSession()
+    
+    if (error) {
+      console.error('Auth session error:', error)
+    }
+  } catch (e) {
+    console.error('Error refreshing session in middleware:', e)
   }
 
   return res
