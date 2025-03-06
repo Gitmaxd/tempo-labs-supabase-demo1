@@ -98,12 +98,12 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="https://github.com/supabase/auth-helpers"
+                  href="https://supabase.com/docs/guides/auth/server-side/nextjs"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white transition-colors relative group"
                 >
-                  Auth Helpers
+                  Supabase SSR
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-blue-600/30 dark:bg-white/30 group-hover:w-full transition-all duration-300"></span>
                 </a>
               </li>

@@ -51,7 +51,7 @@ export default async function Home() {
                 icon: <Lock className="w-6 h-6" />,
                 title: "Instant Authentication",
                 description:
-                  "Built in minutes with Tempo Labs AI, featuring pre-configured Supabase authentication with multiple sign-in options ready to use",
+                  "Built in minutes with Tempo Labs AI, featuring pre-configured Supabase SSR authentication with server-side rendering and multiple sign-in options",
                 gradient: "dark:bg-gradient-dark-gray",
               },
               {
@@ -222,7 +222,7 @@ export default async function Home() {
                 Supabase
               </div>
               <div className="text-gray-600 dark:text-gray-300">
-                Open-source backend platform with authentication, database, and storage, seamlessly integrated by Tempo Labs AI
+                Open-source backend platform with modern SSR authentication, database, and storage, seamlessly integrated by Tempo Labs AI
               </div>
             </div>
             <div className="static-border rounded-xl premium-shadow">
