@@ -14,7 +14,7 @@ export default async function Navbar() {
   } = await (await supabase).auth.getUser();
 
   return (
-    <nav className="w-full border-b border-gray-200 dark:border-zinc-900/50 bg-white/80 dark:bg-black/80 py-2 sm:py-3 sticky top-0 z-10 backdrop-blur-sm dark:backdrop-blur-md transition-theme dark:glass-effect">
+    <nav className="w-full border-b border-gray-200 dark:border-zinc-900/50 bg-white/80 dark:bg-black/80 py-2 sm:py-3 sticky top-0 z-40 backdrop-blur-sm dark:backdrop-blur-md transition-theme dark:glass-effect">
       <div className="absolute inset-0 dark:bg-gradient-black-gray opacity-0 dark:opacity-30 pointer-events-none"></div>
       <div className="container mx-auto px-3 sm:px-4 flex justify-between items-center relative">
         <div className="flex items-center">
