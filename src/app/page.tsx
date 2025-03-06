@@ -226,7 +226,7 @@ export default async function Home() {
               </div>
             </div>
             <div className="static-border rounded-xl premium-shadow">
-              <div className="p-6 bg-white dark:bg-black rounded-xl transition-theme dark:bg-gradient-highlight dark:subtle-glow">
+              <div className="p-6 bg-white dark:bg-black rounded-[0.7rem] transition-theme dark:bg-gradient-highlight dark:subtle-glow h-full flex flex-col">
                 <div className="text-4xl font-bold mb-2 text-purple-600 dark:text-white">
                   Tempo Labs
                 </div>
@@ -250,10 +250,10 @@ export default async function Home() {
             Sign up now to explore this demo and see how Tempo Labs AI can transform your development process, turning complex application ideas into reality in minutes instead of weeks.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <div className="static-border rounded-lg">
+            <div className="static-border rounded-[0.75rem]">
               <Link
                 href="/sign-up"
-                className="inline-flex items-center px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 dark:bg-black dark:hover:bg-zinc-900 rounded-lg transition-colors"
+                className="inline-flex items-center px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 dark:bg-black dark:hover:bg-zinc-900 rounded-[0.7rem] transition-colors"
               >
                 Sign Up
                 <ArrowUpRight className="ml-2 w-4 h-4" />

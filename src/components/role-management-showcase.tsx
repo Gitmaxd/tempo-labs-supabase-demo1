@@ -37,8 +37,8 @@ export default function RoleManagementShowcase() {
               <ArrowUpRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
-          <div className="static-border rounded-xl premium-shadow">
-            <div className="bg-white dark:bg-zinc-900/80 p-4 rounded-xl overflow-hidden">
+          <div className="static-border rounded-[0.75rem] premium-shadow">
+            <div className="bg-white dark:bg-zinc-900/80 p-4 rounded-[0.7rem] overflow-hidden">
               {/* Role Management UI Mockup */}
               <div className="rounded-lg shadow-lg overflow-hidden border border-gray-200 dark:border-zinc-800">
                 {/* Header */}
