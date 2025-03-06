@@ -10,7 +10,7 @@ import {
 
 export default function Hero() {
   return (
-    <div className="relative overflow-hidden bg-black transition-theme min-h-[calc(100vh-73px)] flex flex-col justify-center">
+    <div className="relative overflow-hidden bg-white dark:bg-black transition-theme min-h-[calc(100vh-73px)] flex flex-col justify-center">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 opacity-70 dark:from-zinc-900 dark:via-black dark:to-zinc-900 dark:opacity-100"></div>
 
