@@ -127,15 +127,17 @@ export default function Hero() {
       <div className="relative pt-24 pb-32 sm:pt-32 sm:pb-40">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-8 tracking-tight relative">
+            <h1 className="text-5xl sm:text-6xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight relative">
               Tempo Labs{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-white dark:to-gray-300 relative">
                 Authentication
                 <span className="absolute -inset-1 blur-sm bg-gradient-to-r from-blue-600/20 to-purple-600/20 dark:from-white/20 dark:to-gray-300/20 opacity-0 dark:opacity-70 rounded-lg -z-10"></span>
               </span>{" "}
               Demo
-              <div className="text-sm text-gray-500 dark:text-gray-400 font-normal mt-2">by GitMaxd</div>
             </h1>
+            <div className="mb-8">
+              <span className="text-base text-gray-500 dark:text-gray-400 font-normal tracking-wide px-3 py-1 bg-gray-100 dark:bg-zinc-900 rounded-md inline-block">by GitMaxd</span>
+            </div>
 
             <p className="text-xl text-gray-600 dark:text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
               Explore the power of Tempo Labs authentication with role-based

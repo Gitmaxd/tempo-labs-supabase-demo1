@@ -24,9 +24,11 @@ export default async function Navbar() {
           <Shield className="h-6 w-6 text-blue-600 dark:text-white group-hover:scale-110 transition-transform" />
           <div className="flex flex-col">
             <span>Tempo Labs Demo</span>
-            <span className="text-xs text-gray-500 dark:text-gray-400 font-normal">by GitMaxd</span>
           </div>
         </Link>
+        <div className="ml-8 -mt-1">
+          <span className="text-sm text-gray-500 dark:text-gray-400 font-normal tracking-wide px-2 py-0.5 bg-gray-100 dark:bg-zinc-900 rounded-md inline-block">by GitMaxd</span>
+        </div>
         <div className="flex gap-4 items-center">
           <ThemeSwitcher />
           {user ? (
