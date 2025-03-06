@@ -60,8 +60,8 @@ The demo features a modern, responsive UI with dark mode support, role-based acc
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Gitmaxd/tempo-labs-supabase-demo.git
-   cd tempo-labs-supabase-demo
+   git clone https://github.com/Gitmaxd/tempo-labs-supabase-demo1.git
+   cd tempo-labs-supabase-demo1
    ```
 
 2. Install dependencies:
@@ -92,11 +92,11 @@ The demo features a modern, responsive UI with dark mode support, role-based acc
 
 This application can be easily deployed to Vercel:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FGitmaxd%2Ftempo-labs-supabase-demo)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FGitmaxd%2Ftempo-labs-supabase-demo1)
 
 ## 🤝 Contributing
 
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/Gitmaxd/tempo-labs-supabase-demo/issues).
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/Gitmaxd/tempo-labs-supabase-demo1/issues).
 
 ## 📝 License
 

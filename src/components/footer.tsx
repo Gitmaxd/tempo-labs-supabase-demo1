@@ -219,7 +219,7 @@ export default function Footer() {
               <X className="h-6 w-6 group-hover:scale-110 transition-transform" />
             </a>
             <a
-              href="https://github.com/Gitmaxd/tempo-labs-supabase-demo.git"
+              href="https://github.com/Gitmaxd/tempo-labs-supabase-demo1"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors group"
