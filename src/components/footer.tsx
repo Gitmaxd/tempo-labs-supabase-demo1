@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Twitter, Linkedin, Github } from "lucide-react";
+import { X, Github } from "lucide-react";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -216,16 +216,7 @@ export default function Footer() {
               className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors group"
             >
               <span className="sr-only">X</span>
-              <Twitter className="h-6 w-6 group-hover:scale-110 transition-transform" />
-            </a>
-            <a
-              href="https://www.linkedin.com/company/supabase/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 transition-colors group"
-            >
-              <span className="sr-only">LinkedIn</span>
-              <Linkedin className="h-6 w-6 group-hover:scale-110 transition-transform" />
+              <X className="h-6 w-6 group-hover:scale-110 transition-transform" />
             </a>
             <a
               href="https://github.com/Gitmaxd/tempo-labs-supabase-demo.git"
