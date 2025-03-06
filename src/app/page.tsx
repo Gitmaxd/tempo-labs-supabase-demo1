@@ -1,7 +1,6 @@
 import Footer from "@/components/footer";
 import Hero from "@/components/hero";
 import Navbar from "@/components/navbar";
-import RoleManagementShowcase from "@/components/role-management-showcase";
 import {
   ArrowUpRight,
   CheckCircle2,
@@ -32,7 +31,6 @@ export default async function Home() {
       
       <Navbar />
       <Hero />
-      <RoleManagementShowcase />
 
       {/* Features Section */}
       <section className="py-24 bg-white dark:bg-black border-y border-transparent dark:border-zinc-950 transition-theme relative">
