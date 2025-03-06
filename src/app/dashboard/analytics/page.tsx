@@ -71,7 +71,14 @@ export default async function AnalyticsDashboard() {
   // Get recent content
   const { data: recentContent } = await supabase
     .from("content")
-    .select("*, users!inner(full_name)")
+    .select(`
+      *,
+      users!content_author_id_fkey (
+        id,
+        full_name,
+        email
+      )
+    `)
     .order("created_at", { ascending: false })
     .limit(5);
 
@@ -174,9 +181,9 @@ export default async function AnalyticsDashboard() {
                             <p className="font-medium truncate max-w-[250px]">
                               {item.title}
                             </p>
-                            <p className="text-sm text-muted-foreground">
+                            <div className="text-xs text-muted-foreground">
                               By {item.users?.full_name || "Unknown"}
-                            </p>
+                            </div>
                           </div>
                           <div className="text-sm">
                             <span

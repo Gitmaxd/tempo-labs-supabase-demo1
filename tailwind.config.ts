@@ -67,14 +67,45 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "pulse-slow": {
+          '0%, 100%': { opacity: '0.4' },
+          '50%': { opacity: '0.8' },
+        },
+        "float": {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        "shimmer": {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "pulse-slow": "pulse-slow 6s ease-in-out infinite",
+        "float": "float 6s ease-in-out infinite",
+        "shimmer": "shimmer 8s ease-in-out infinite",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    function({ addUtilities, theme, variants }: { 
+      addUtilities: (utilities: Record<string, Record<string, string>>, variants?: string[]) => void;
+      theme: (path: string, defaultValue?: unknown) => unknown;
+      variants: (path: string) => string[];
+    }) {
+      const animationDelayUtilities: Record<string, Record<string, string>> = {};
+      [1000, 2000, 3000, 4000, 5000].forEach(delay => {
+        animationDelayUtilities[`.animation-delay-${delay}`] = {
+          'animation-delay': `${delay}ms`,
+        };
+      });
+      addUtilities(animationDelayUtilities, variants('animationDelay'));
+    },
+  ],
 } satisfies Config;
 
 export default config;
+

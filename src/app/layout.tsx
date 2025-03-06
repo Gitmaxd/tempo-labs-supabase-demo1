@@ -9,9 +9,9 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Supabase Demo | Role-Based Authentication",
+  title: "Tempo Labs Demo | Role-Based Authentication",
   description:
-    "A demonstration of role-based authentication using Supabase and Next.js, built with Tempo Labs AI",
+    "A demo application showcasing role-based authentication with Supabase and Next.js, built with Tempo Labs AI",
 };
 
 export default function RootLayout({

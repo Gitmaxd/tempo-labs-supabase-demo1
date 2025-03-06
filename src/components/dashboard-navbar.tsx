@@ -64,7 +64,10 @@ export default function DashboardNavbar() {
             className="text-xl font-bold flex items-center gap-2 dark:text-white"
           >
             <Shield className="h-6 w-6 text-blue-600 dark:text-white" />
-            <span>Supabase Demo</span>
+            <div className="flex flex-col">
+              <span>Tempo Labs Demo</span>
+              <span className="text-xs text-gray-500 dark:text-gray-400 font-normal">by GitMaxd</span>
+            </div>
           </Link>
           <div className="hidden md:flex items-center space-x-1">
             <Link

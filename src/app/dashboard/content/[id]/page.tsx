@@ -1,7 +1,7 @@
 import { createClient } from "../../../../../supabase/server";
 import { redirect } from "next/navigation";
 import DashboardNavbar from "@/components/dashboard-navbar";
-import { ArrowLeft, Calendar, User, Tag, Edit, Eye } from "lucide-react";
+import { ArrowLeft, Calendar, User, Tag, Edit, Eye, FileText, Globe, FolderOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { canEditContent } from "@/lib/roles";
 import Link from "next/link";
@@ -14,8 +14,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { DeleteButton } from "../client-components";
 
 interface ContentUser {
+  id: string;
   full_name: string | null;
   email: string;
 }
@@ -31,6 +33,7 @@ interface Content {
   views: number;
   created_at: string;
   tags: string[];
+  author_id: string;
   users: ContentUser;
 }
 
@@ -72,18 +75,47 @@ export default async function ContentDetailPage({
   // Get content from database
   const { data: contentData, error: contentError } = await supabase
     .from("content")
-    .select("*, users!inner(full_name, email)")
+    .select("*")
     .eq("id", contentId)
     .single() as { data: Content | null; error: Error | null };
 
   if (contentError) {
     console.error("Error fetching content:", contentError);
-    return redirect("/dashboard/content");
+    return (
+      <>
+        <DashboardNavbar />
+        <main className="container mx-auto px-4 py-8">
+          <div className="bg-red-50 dark:bg-red-900/20 p-6 rounded-lg">
+            <h2 className="text-xl font-bold text-red-600 dark:text-red-400 mb-2">Error</h2>
+            <p className="text-red-500 dark:text-red-300">
+              Failed to load content: {contentError.message}
+            </p>
+          </div>
+        </main>
+      </>
+    );
   }
 
   if (!contentData) {
     return redirect("/dashboard/content");
   }
+  
+  // Get user information for the content author
+  const { data: authorData, error: authorError } = await supabase
+    .from("users")
+    .select("id, full_name, email")
+    .eq("id", contentData.author_id)
+    .single();
+    
+  if (authorError) {
+    console.error("Error fetching user data:", authorError);
+  }
+  
+  // Combine content with user data
+  const contentWithUser: Content = {
+    ...contentData,
+    users: authorData || { id: "", full_name: "Unknown", email: "" }
+  };
 
   // Increment view count
   const { error: updateError } = await supabase
@@ -99,103 +131,130 @@ export default async function ContentDetailPage({
     <>
       <DashboardNavbar />
       <main className="container mx-auto px-4 py-8">
-        <div className="flex items-center gap-3 mb-8">
-          <Link href="/dashboard/content">
-            <Button variant="ghost" size="icon">
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-          </Link>
-          <h1 className="text-3xl font-bold">Content Details</h1>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <FileText className="h-8 w-8 text-blue-600 dark:text-white" />
+            <h1 className="text-3xl font-bold">{contentWithUser.title}</h1>
+          </div>
+          <div className="flex gap-2">
+            <Link href={`/dashboard/content/edit/${contentWithUser.id}`}>
+              <Button variant="outline">
+                <Edit className="mr-2 h-4 w-4" />
+                Edit Content
+              </Button>
+            </Link>
+            <DeleteButton id={parseInt(contentWithUser.id)} />
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
-            <Card className="mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-2 space-y-6">
+            <Card>
               <CardHeader>
-                <div className="flex justify-between items-start">
-                  <div>
-                    <CardTitle className="text-2xl">
-                      {contentData.title}
-                    </CardTitle>
-                    <CardDescription className="mt-2">
-                      {contentData.excerpt}
-                    </CardDescription>
-                  </div>
-                  <span
-                    className={`text-xs px-2 py-1 rounded-full ${contentData.status === "published" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" : "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200"}`}
-                  >
-                    {contentData.status.charAt(0).toUpperCase() +
-                      contentData.status.slice(1)}
-                  </span>
-                </div>
+                <CardTitle>Content Preview</CardTitle>
+                <CardDescription>
+                  How the content appears to users
+                </CardDescription>
               </CardHeader>
               <CardContent>
-                <div
-                  className="prose dark:prose-invert max-w-none"
-                  dangerouslySetInnerHTML={{
-                    __html: contentData.content || "",
-                  }}
-                />
-              </CardContent>
-              <CardFooter className="flex justify-between border-t pt-6">
-                <div className="flex gap-4">
-                  <PreviewButton />
-                  <Link href={`/dashboard/content/edit/${contentId}`}>
-                    <Button variant="outline">
-                      <Edit className="mr-2 h-4 w-4" />
-                      Edit
-                    </Button>
-                  </Link>
+                <div className="prose dark:prose-invert max-w-none">
+                  <div
+                    dangerouslySetInnerHTML={{ __html: contentWithUser.content || "" }}
+                  />
                 </div>
-                <PublishButton />
-              </CardFooter>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Raw Content</CardTitle>
+                <CardDescription>HTML content source</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <pre className="bg-muted p-4 rounded-md overflow-auto max-h-96 text-xs">
+                  {contentWithUser.content || ""}
+                </pre>
+              </CardContent>
             </Card>
           </div>
 
-          <div>
-            <Card className="mb-6">
+          <div className="space-y-6">
+            <Card>
               <CardHeader>
-                <CardTitle>Content Information</CardTitle>
+                <CardTitle>Content Details</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm">
-                    Published:{" "}
-                    {new Date(contentData.created_at).toLocaleDateString()}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <User className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">
-                    Author: {contentData.users?.full_name || "Unknown"}
-                  </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Eye className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-sm">
-                    {contentData.views || 0} Views
+                    Created:{" "}
+                    {new Date(contentWithUser.created_at).toLocaleDateString()}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Tag className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm">
-                    Category: {contentData.category || "Uncategorized"}
+                    Status:{" "}
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs ${
+                        contentWithUser.status === "published"
+                          ? "bg-green-100 text-green-800 dark:bg-zinc-900 dark:text-white"
+                          : "bg-amber-100 text-amber-800 dark:bg-zinc-900 dark:text-white"
+                      }`}
+                    >
+                      {contentWithUser.status.charAt(0).toUpperCase() +
+                        contentWithUser.status.slice(1)}
+                    </span>
                   </span>
                 </div>
-                {contentData.tags && contentData.tags.length > 0 && (
-                  <div className="pt-2">
-                    <h4 className="text-sm font-medium mb-2">Tags</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {contentData.tags.map((tag: string) => (
-                        <span
-                          key={tag}
-                          className="text-xs px-2 py-1 rounded-full bg-secondary text-secondary-foreground"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
+                <div className="flex items-center gap-2">
+                  <User className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm">
+                    Author: {contentWithUser.users.full_name || "Unknown"}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Eye className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm">
+                    {contentWithUser.views || 0} Views
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Globe className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm">
+                    Visibility:{" "}
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs ${
+                        contentWithUser.visibility === "public"
+                          ? "bg-blue-100 text-blue-800 dark:bg-zinc-900 dark:text-white"
+                          : contentWithUser.visibility === "registered"
+                          ? "bg-purple-100 text-purple-800 dark:bg-zinc-900 dark:text-white"
+                          : "bg-gray-100 text-gray-800 dark:bg-zinc-900 dark:text-white"
+                      }`}
+                    >
+                      {contentWithUser.visibility.charAt(0).toUpperCase() +
+                        contentWithUser.visibility.slice(1)}
+                    </span>
+                  </span>
+                </div>
+                {contentWithUser.category && (
+                  <div className="flex items-center gap-2">
+                    <FolderOpen className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-sm">
+                      Category: {contentWithUser.category}
+                    </span>
+                  </div>
+                )}
+                {contentWithUser.tags && contentWithUser.tags.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {contentWithUser.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-1 bg-muted rounded-full text-xs"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </div>
                 )}
               </CardContent>
@@ -203,33 +262,16 @@ export default async function ContentDetailPage({
 
             <Card>
               <CardHeader>
-                <CardTitle>Visibility</CardTitle>
+                <CardTitle>Actions</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Status</span>
-                    <span
-                      className={`text-xs px-2 py-1 rounded-full ${contentData.status === "published" ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200" : "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200"}`}
-                    >
-                      {contentData.status.charAt(0).toUpperCase() +
-                        contentData.status.slice(1)}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">Visibility</span>
-                    <span className="text-sm font-medium">
-                      {contentData.visibility.charAt(0).toUpperCase() +
-                        contentData.visibility.slice(1)}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm">URL</span>
-                    <span className="text-sm text-muted-foreground">
-                      /content/{contentId}
-                    </span>
-                  </div>
-                </div>
+              <CardContent className="space-y-2">
+                <Link href={`/dashboard/content/edit/${contentWithUser.id}`} className="w-full">
+                  <Button className="w-full" variant="outline">
+                    <Edit className="mr-2 h-4 w-4" />
+                    Edit Content
+                  </Button>
+                </Link>
+                <DeleteButton id={parseInt(contentWithUser.id)} />
               </CardContent>
             </Card>
           </div>

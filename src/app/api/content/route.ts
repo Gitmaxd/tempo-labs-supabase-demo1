@@ -1,6 +1,5 @@
 import { createClient } from "../../../../supabase/server";
 import { NextResponse } from "next/server";
-import { canEditContent } from "@/lib/roles";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -33,7 +32,7 @@ export async function GET(request: Request) {
   // Build query
   let query = supabase
     .from("content")
-    .select("*, users!inner(full_name, email)");
+    .select("*");
 
   // Apply filters
   if (id) {
@@ -44,29 +43,53 @@ export async function GET(request: Request) {
     query = query.eq("category", category);
   }
 
-  if (status && canEditContent(userRole)) {
+  if (status) {
     query = query.eq("status", status);
-  } else {
-    // Non-editors can only see published content
-    query = query.eq("status", "published");
   }
 
   if (search) {
-    query = query.or(
-      `title.ilike.%${search}%,excerpt.ilike.%${search}%,content.ilike.%${search}%`,
-    );
+    query = query.or(`title.ilike.%${search}%,content.ilike.%${search}%`);
   }
 
-  // Order by created_at
-  query = query.order("created_at", { ascending: false });
+  // Execute query
+  const { data: contentItems, error: contentError } = await query;
 
-  const { data, error } = await query;
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  if (contentError) {
+    return NextResponse.json({ error: contentError.message }, { status: 500 });
   }
 
-  return NextResponse.json({ content: data });
+  // If we have content items, fetch the user information
+  if (contentItems && contentItems.length > 0) {
+    // Get all unique author IDs
+    const authorIds = Array.from(new Set(contentItems.map(item => item.author_id)));
+    
+    // Fetch user information for these authors
+    const { data: usersData, error: usersError } = await supabase
+      .from("users")
+      .select("id, full_name, email")
+      .in("id", authorIds);
+      
+    if (usersError) {
+      console.error("Error fetching users:", usersError);
+      return NextResponse.json({ error: usersError.message }, { status: 500 });
+    }
+    
+    // Create a map of user IDs to user data for quick lookup
+    const userMap: Record<string, any> = {};
+    usersData?.forEach(user => {
+      userMap[user.id] = user;
+    });
+    
+    // Combine content with user data
+    const contentWithUsers = contentItems.map(item => ({
+      ...item,
+      users: userMap[item.author_id] || { full_name: "Unknown", email: "" }
+    }));
+    
+    return NextResponse.json({ content: id ? contentWithUsers[0] : contentWithUsers });
+  }
+
+  return NextResponse.json({ content: id ? contentItems[0] : contentItems });
 }
 
 export async function POST(request: Request) {
@@ -84,16 +107,11 @@ export async function POST(request: Request) {
   // Get user's role
   const { data: userData } = await supabase
     .from("users")
-    .select("*, roles(name)")
+    .select("*")
     .eq("id", user.id)
     .single();
 
-  const userRole = userData?.roles?.name || null;
-
-  // Check if user can edit content
-  if (!canEditContent(userRole)) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+  const userRole = userData?.role || "user";
 
   try {
     const contentData = await request.json();
@@ -152,16 +170,11 @@ export async function PUT(request: Request) {
   // Get user's role
   const { data: userData } = await supabase
     .from("users")
-    .select("*, roles(name)")
+    .select("*")
     .eq("id", user.id)
     .single();
 
-  const userRole = userData?.roles?.name || null;
-
-  // Check if user can edit content
-  if (!canEditContent(userRole)) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
+  const userRole = userData?.role || "user";
 
   try {
     const { id, ...contentData } = await request.json();
@@ -187,20 +200,23 @@ export async function PUT(request: Request) {
       updated_at: new Date().toISOString(),
     };
 
-    // Check if user is admin or the content author
-    if (userRole !== "admin") {
-      const { data: existingContent } = await supabase
-        .from("content")
-        .select("author_id")
-        .eq("id", id)
-        .single();
+    // Get the existing content to check ownership
+    const { data: existingContent, error: fetchError } = await supabase
+      .from("content")
+      .select("*")
+      .eq("id", id)
+      .single();
 
-      if (!existingContent || existingContent.author_id !== user.id) {
-        return NextResponse.json(
-          { error: "You can only edit your own content" },
-          { status: 403 },
-        );
-      }
+    if (fetchError) {
+      return NextResponse.json({ error: fetchError.message }, { status: 500 });
+    }
+
+    // Check if user is authorized to update this content
+    if (existingContent.author_id !== user.id && userRole !== "admin") {
+      return NextResponse.json(
+        { error: "Not authorized to update this content" },
+        { status: 403 },
+      );
     }
 
     // Update content
@@ -248,31 +264,29 @@ export async function DELETE(request: Request) {
   // Get user's role
   const { data: userData } = await supabase
     .from("users")
-    .select("*, roles(name)")
+    .select("*")
     .eq("id", user.id)
     .single();
 
-  const userRole = userData?.roles?.name || null;
+  const userRole = userData?.role || "user";
 
-  // Check if user can edit content
-  if (!canEditContent(userRole)) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  // Get the content to check ownership
+  const { data: existingContent, error: fetchError } = await supabase
+    .from("content")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (fetchError) {
+    return NextResponse.json({ error: fetchError.message }, { status: 500 });
   }
 
-  // Check if user is admin or the content author
-  if (userRole !== "admin") {
-    const { data: existingContent } = await supabase
-      .from("content")
-      .select("author_id")
-      .eq("id", id)
-      .single();
-
-    if (!existingContent || existingContent.author_id !== user.id) {
-      return NextResponse.json(
-        { error: "You can only delete your own content" },
-        { status: 403 },
-      );
-    }
+  // Check if user is authorized to delete this content
+  if (existingContent.author_id !== user.id && userRole !== "admin") {
+    return NextResponse.json(
+      { error: "Not authorized to delete this content" },
+      { status: 403 }
+    );
   }
 
   // Delete content
