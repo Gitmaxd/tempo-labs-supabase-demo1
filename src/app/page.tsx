@@ -227,12 +227,14 @@ export default async function Home() {
             </div>
             <div className="static-border rounded-xl premium-shadow">
               <div className="p-6 bg-white dark:bg-black rounded-[0.7rem] transition-theme dark:bg-gradient-highlight dark:subtle-glow h-full flex flex-col">
-                <div className="text-4xl font-bold mb-2 text-purple-600 dark:text-white">
-                  Tempo Labs
-                </div>
-                <div className="text-gray-600 dark:text-gray-300">
-                  AI-powered visual editor that bootstraps complete applications 10x faster
-                </div>
+                <a href="https://www.tempo.new/" target="_blank" rel="noopener noreferrer" className="hover:opacity-90 transition-opacity">
+                  <div className="text-4xl font-bold mb-2 text-purple-600 dark:text-white">
+                    Tempo Labs
+                  </div>
+                  <div className="text-gray-600 dark:text-gray-300">
+                    AI-powered visual editor that bootstraps complete applications 10x faster
+                  </div>
+                </a>
               </div>
             </div>
           </div>
@@ -243,9 +245,11 @@ export default async function Home() {
       <section className="py-20 bg-gray-50 dark:bg-black transition-theme relative">
         <div className="absolute inset-0 dark:bg-gradient-accent opacity-0 dark:opacity-100 pointer-events-none"></div>
         <div className="container mx-auto px-4 text-center relative">
-          <h2 className="text-3xl font-bold mb-4 dark:text-white">
-            Ready to Experience Tempo Labs?
-          </h2>
+          <a href="https://www.tempo.new/" target="_blank" rel="noopener noreferrer" className="inline-block hover:opacity-90 transition-opacity">
+            <h2 className="text-3xl font-bold mb-4 dark:text-white">
+              Ready to Experience Tempo Labs?
+            </h2>
+          </a>
           <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
             Sign up now to explore this demo and see how Tempo Labs AI can transform your development process, turning complex application ideas into reality in minutes instead of weeks.
           </p>

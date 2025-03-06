@@ -48,7 +48,7 @@ The demo features a modern, responsive UI with dark mode support, role-based acc
 
 - **Development Tools**
   - [TypeScript](https://www.typescriptlang.org/) - JavaScript with syntax for types
-  - [Tempo DevTools](https://tempo.build/) - AI-powered development acceleration
+  - [Tempo DevTools](https://www.tempo.new/) - AI-powered development acceleration
 
 ## 📋 Prerequisites
 
@@ -104,12 +104,12 @@ This project is [MIT](LICENSE) licensed.
 
 ## 🙏 Acknowledgements
 
-- [Tempo Labs](https://tempo.build/) for providing the AI-powered development tools
+- [Tempo Labs](https://www.tempo.new/) for providing the AI-powered development tools
 - [Supabase](https://supabase.com/) for the backend infrastructure
 - [Next.js](https://nextjs.org/) for the frontend framework
 
 ---
 
 <div align="center">
-  <p>Built with ❤️ using <a href="https://tempo.build/">Tempo Labs AI</a></p>
+  <p>Built with ❤️ using <a href="https://www.tempo.new/">Tempo Labs AI</a></p>
 </div>
