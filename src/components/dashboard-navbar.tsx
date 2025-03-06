@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import { ThemeSwitcher } from "./theme-switcher";
 import { useEffect, useState } from "react";
 import RoleBadge from "./role-badge";
+import DashboardMobileMenu from "./dashboard-mobile-menu";
 
 export default function DashboardNavbar() {
   const supabase = createClient();
@@ -55,21 +56,21 @@ export default function DashboardNavbar() {
   }, []);
 
   return (
-    <nav className="w-full border-b border-gray-200 dark:border-zinc-900 bg-white dark:bg-black py-4 sticky top-0 z-10">
-      <div className="container mx-auto px-4 flex justify-between items-center">
-        <div className="flex items-center gap-4">
+    <nav className="w-full border-b border-gray-200 dark:border-zinc-900 bg-white dark:bg-black py-2 sm:py-4 sticky top-0 z-10">
+      <div className="container mx-auto px-3 sm:px-4 flex justify-between items-center">
+        <div className="flex items-center gap-2 sm:gap-4">
           <Link
             href="/"
             prefetch
-            className="text-xl font-bold flex items-center gap-2 dark:text-white"
+            className="text-lg sm:text-xl font-bold flex items-center gap-1.5 sm:gap-2 dark:text-white"
           >
-            <Shield className="h-6 w-6 text-blue-600 dark:text-white" />
+            <Shield className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600 dark:text-white" />
             <div className="flex flex-col">
               <span>Tempo Labs Demo</span>
             </div>
           </Link>
-          <div className="ml-8 -mt-1">
-            <span className="text-sm text-gray-500 dark:text-gray-400 font-normal tracking-wide px-2 py-0.5 bg-gray-100 dark:bg-zinc-900 rounded-md inline-block">by GitMaxd</span>
+          <div className="ml-2 sm:ml-8 -mt-1 hidden sm:block">
+            <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 font-normal tracking-wide px-1.5 sm:px-2 py-0.5 bg-gray-100 dark:bg-zinc-900 rounded-md inline-block">by GitMaxd</span>
           </div>
           <div className="hidden md:flex items-center space-x-1">
             <Link
@@ -115,17 +116,21 @@ export default function DashboardNavbar() {
             </Link>
           </div>
         </div>
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-2 sm:gap-4 items-center">
           <ThemeSwitcher />
           <Link href="/" className="md:hidden">
-            <Button variant="ghost" size="icon">
-              <Home className="h-5 w-5" />
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <Home className="h-4 w-4" />
             </Button>
           </Link>
+          
+          {/* Mobile menu button */}
+          <DashboardMobileMenu userName={userName} userRole={userRole} />
+          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <UserCircle className="h-6 w-6" />
+              <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9">
+                <UserCircle className="h-5 w-5 sm:h-6 sm:w-6" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">

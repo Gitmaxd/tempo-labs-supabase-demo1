@@ -41,9 +41,7 @@ export default async function Home() {
               Tempo Labs Demo
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Explore the power of Tempo Labs authentication with our
-              comprehensive role management system. Perfect for modern web
-              applications.
+              Discover how Tempo Labs AI accelerates development by bootstrapping complete Next.js applications with Supabase integration. Experience the versatility and intelligence that transforms weeks of coding into minutes.
             </p>
           </div>
 
@@ -51,44 +49,44 @@ export default async function Home() {
             {[
               {
                 icon: <Lock className="w-6 h-6" />,
-                title: "Secure Authentication",
+                title: "Instant Authentication",
                 description:
-                  "Email/password and OAuth sign-in options with Tempo Labs' secure authentication system",
+                  "Built in minutes with Tempo Labs AI, featuring pre-configured Supabase authentication with multiple sign-in options ready to use",
                 gradient: "dark:bg-gradient-dark-gray",
               },
               {
                 icon: <UserCog className="w-6 h-6" />,
-                title: "Role-Based Access",
+                title: "Database Integration",
                 description:
-                  "Three distinct user roles (Admin, Editor, User) with appropriate permissions",
+                  "Tempo Labs AI automatically sets up Supabase database connections, models, and queries to get your application data-ready from day one",
                 gradient: "dark:bg-gradient-accent",
               },
               {
                 icon: <LayoutDashboard className="w-6 h-6" />,
-                title: "Admin Dashboard",
+                title: "Complete UI Framework",
                 description:
-                  "Powerful analytics dashboard with user statistics and management capabilities",
+                  "Rapidly developed with Tempo's visual editor, featuring responsive layouts, interactive components, and modern design patterns",
                 gradient: "dark:bg-gradient-gray-light",
               },
               {
                 icon: <Shield className="w-6 h-6" />,
-                title: "Enterprise Security",
+                title: "Security Best Practices",
                 description:
-                  "Row-level security and data protection built on Tempo Labs' secure foundation",
+                  "Tempo Labs AI implements security best practices including data protection, input validation, and secure API handling",
                 gradient: "dark:bg-gradient-highlight",
               },
               {
                 icon: <UserPlus className="w-6 h-6" />,
-                title: "Profile Management",
+                title: "User Management",
                 description:
-                  "Complete user profile system with avatar uploads using Tempo Labs Storage",
+                  "Complete user management system with profiles, preferences, and media uploads, built in a fraction of the time using Tempo Labs' visual editor",
                 gradient: "dark:bg-gradient-dark-gray",
               },
               {
                 icon: <Zap className="w-6 h-6" />,
                 title: "AI-Powered Development",
                 description:
-                  "Built with Tempo Labs AI to showcase rapid application development",
+                  "This entire application was built 10x faster with Tempo Labs AI, showcasing the future of rapid application development",
                 gradient: "dark:bg-gradient-accent",
               },
             ].map((feature, index) => (
@@ -117,11 +115,10 @@ export default async function Home() {
         <div className="container mx-auto px-4 relative">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4 dark:text-white">
-              Role Comparison
+              Application Features
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              See how different user roles provide varying levels of access and
-              capabilities
+              Tempo Labs AI intelligently designs and implements these features, providing a complete application foundation with minimal development time
             </p>
           </div>
 
@@ -207,8 +204,7 @@ export default async function Home() {
               Built With Modern Technology
             </h2>
             <p className="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              This demo showcases the power of combining Next.js, Tempo Labs, and
-              Tempo Labs AI
+              This demo showcases how Tempo Labs AI accelerates development by combining Next.js and Supabase to create production-ready applications in minutes
             </p>
           </div>
 
@@ -218,24 +214,24 @@ export default async function Home() {
                 Next.js
               </div>
               <div className="text-gray-600 dark:text-gray-300">
-                React framework with server-side rendering
+                Modern React framework with server components, routing, and optimizations, all configured by Tempo Labs
               </div>
             </div>
             <div className="p-6 bg-white dark:bg-black rounded-xl shadow-sm border border-gray-100 dark:border-zinc-900/50 hover:dark:border-zinc-800 transition-theme dark:bg-gradient-gray-light dark:subtle-glow">
               <div className="text-4xl font-bold mb-2 text-green-600 dark:text-white">
-                Tempo Labs
+                Supabase
               </div>
               <div className="text-gray-600 dark:text-gray-300">
-                Advanced authentication and database solution
+                Open-source backend platform with authentication, database, and storage, seamlessly integrated by Tempo Labs AI
               </div>
             </div>
             <div className="static-border rounded-xl premium-shadow">
               <div className="p-6 bg-white dark:bg-black rounded-xl transition-theme dark:bg-gradient-highlight dark:subtle-glow">
                 <div className="text-4xl font-bold mb-2 text-purple-600 dark:text-white">
-                  Tempo AI
+                  Tempo Labs
                 </div>
                 <div className="text-gray-600 dark:text-gray-300">
-                  AI-powered development acceleration
+                  AI-powered visual editor that bootstraps complete applications 10x faster
                 </div>
               </div>
             </div>
@@ -248,11 +244,10 @@ export default async function Home() {
         <div className="absolute inset-0 dark:bg-gradient-accent opacity-0 dark:opacity-100 pointer-events-none"></div>
         <div className="container mx-auto px-4 text-center relative">
           <h2 className="text-3xl font-bold mb-4 dark:text-white">
-            Ready to Explore?
+            Ready to Experience Tempo Labs?
           </h2>
           <p className="text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-            Sign up now to experience the power of role-based authentication
-            with Supabase.
+            Sign up now to explore this demo and see how Tempo Labs AI can transform your development process, turning complex application ideas into reality in minutes instead of weeks.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <div className="static-border rounded-lg">
